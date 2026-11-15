@@ -1,0 +1,41 @@
+# Roadmap
+
+Committed work: what will be done. Code `RM-###` (never reused).
+Ordered by priority, top first. When a task is finished it moves to the
+changelog and is deleted from here.
+
+**Entry format:**
+- **Goal:** what we want to achieve.
+- **Scope:** (optional) what's in and what's out.
+- **Open questions:** (optional) what must be decided when starting.
+- **Done when:** clear completion criterion.
+- **Date** and **Status** (Open / In progress).
+
+---
+
+## [RM-003] Mileage readings
+- **Goal:** know each car's current mileage and how it changed over time.
+- **Scope:** readings with date and km per vehicle; the current km is the latest reading. Requires RM-002.
+- **Open questions:** whether creating a vehicle asks for its initial km; whether a reading lower than the previous one is rejected.
+- **Done when:** the mechanic can add a reading from the vehicle detail and see the current km there.
+- **Date:** 2026-11-15 · **Status:** Open
+
+## [RM-004] Maintenance history
+- **Goal:** record what was done to each car and when.
+- **Scope:** per vehicle: date, type, km, description, observation, optional cost. A service with km also counts as a mileage reading. Requires RM-002.
+- **Open questions:** initial list of service types; whether entries can be edited or deleted.
+- **Done when:** the vehicle detail shows its history and the mechanic can add an entry from the phone.
+- **Date:** 2026-11-15 · **Status:** Open
+
+## [RM-005] Due-service alerts
+- **Goal:** the home screen tells the mechanic which cars are due or overdue for a service.
+- **Scope:** each service type has a default interval in km and/or months (whichever comes first), editable per vehicle. Alerts shown in the app only, no push. Requires RM-003 and RM-004.
+- **Open questions:** how far ahead counts as "upcoming".
+- **Done when:** home lists overdue and upcoming services above the vehicle list.
+- **Date:** 2026-11-15 · **Status:** Open
+
+## [RM-006] Production deploy for the workshop
+- **Goal:** the workshop uses the app for real, apart from the dev data.
+- **Scope:** second Supabase project for prod with every migration applied and public sign-ups off, deploy on Vercel (Hobby), the workshop's user accounts. Requires RM-005.
+- **Done when:** the workshop logs in from their phone on the production URL and sees no dev data.
+- **Date:** 2026-11-15 · **Status:** Open
