@@ -36,6 +36,11 @@ siguiente paso es el hosting pago en AWS y lo del RUC 20 para el CV.
 - **Intervalos:** cada tipo de servicio tiene un intervalo por defecto en km
   y/o meses (avisa lo primero que llegue), editable por auto. Ejemplo: aceite
   cada 5,000 km o 6 meses.
+- **Login:** correo y contraseña con Supabase Auth. Registro público
+  desactivado: Esteban crea las cuentas desde el panel de Supabase.
+- **UI:** shadcn/ui + lucide, interfaz solo en español.
+- **Base:** Supabase en la nube. Cómo separar dev de prod queda pendiente de
+  decidir antes de la primera migración (funcionalidad 2).
 - **Acceso:** un usuario por persona; todos ven los mismos autos. Sin
   multi-empresa por ahora.
 
