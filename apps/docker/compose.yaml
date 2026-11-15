@@ -12,8 +12,7 @@ services:
       - pnpm_store:/pnpm/store
     environment:
       CI: "true"
-      npm_config_store_dir: /pnpm/store
-      WATCHPACK_POLLING: "true"
+      pnpm_config_store_dir: /pnpm/store
     env_file:
       - path: ../web/.env.local
         required: false

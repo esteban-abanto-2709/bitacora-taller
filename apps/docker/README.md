@@ -1,6 +1,7 @@
 # Docker (desarrollo)
 
-Levanta el web (Next.js) en modo desarrollo con recarga en caliente.
+Levanta el web (Next.js) en modo desarrollo. En Windows los cambios de código
+no llegan solos al contenedor: reinícialo con `docker compose restart web`.
 
 Desde esta carpeta:
 

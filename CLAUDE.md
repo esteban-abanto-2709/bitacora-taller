@@ -39,14 +39,21 @@ siguiente paso es el hosting pago en AWS y lo del RUC 20 para el CV.
 - **Login:** correo y contraseña con Supabase Auth. Registro público
   desactivado: Esteban crea las cuentas desde el panel de Supabase.
 - **UI:** shadcn/ui + lucide, interfaz solo en español.
-- **Base:** Supabase en la nube. Cómo separar dev de prod queda pendiente de
-  decidir antes de la primera migración (funcionalidad 2).
+- **Base:** Supabase en la nube. El proyecto conectado hoy es **dev**; prod
+  será un segundo proyecto que Esteban crea aparte.
+- **Migraciones:** como en Ronda, sin CLI. Archivos SQL numerados en
+  `apps/web/supabase/migrations` (`0001_vehicles.sql`, …) que Esteban pega en
+  el SQL Editor de Supabase, primero en dev y luego en prod. Los tipos de
+  TypeScript se escriben a mano.
+- **Autos:** sin borrar en el MVP (solo editar). Placa única, guardada en
+  mayúsculas sin espacios ni guiones.
 - **Acceso:** un usuario por persona; todos ven los mismos autos. Sin
   multi-empresa por ahora.
 
 ## Plan macro
 
 1. **Base y login:** Next.js + Supabase, login, layout mobile-first.
+   **Hecho (2026-11-15).**
 2. **Autos:** alta, edición y lista (placa, marca, modelo, año, contacto
    opcional). Depende de 1.
 3. **Kilometraje:** lecturas con fecha; el km actual es la última. Depende de 2.
