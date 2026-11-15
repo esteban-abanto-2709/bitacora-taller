@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { ChevronRight } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { normalizePlate } from "@/lib/vehicles";
 
@@ -31,12 +33,20 @@ export async function VehicleList({ q }: { q: string }) {
   return (
     <ul className="flex flex-col gap-2">
       {data.map((v) => (
-        <li key={v.id} className="rounded-lg border bg-card p-3">
-          <p className="font-semibold">{v.plate}</p>
-          <p className="text-muted-foreground">
-            {v.brand} {v.model}
-            {v.year ? ` · ${v.year}` : ""}
-          </p>
+        <li key={v.id} className="rounded-lg border bg-card">
+          <Link
+            href={`/autos/${v.id}`}
+            className="flex items-center justify-between p-3"
+          >
+            <div>
+              <p className="font-semibold">{v.plate}</p>
+              <p className="text-muted-foreground">
+                {v.brand} {v.model}
+                {v.year ? ` · ${v.year}` : ""}
+              </p>
+            </div>
+            <ChevronRight className="text-muted-foreground" />
+          </Link>
         </li>
       ))}
     </ul>

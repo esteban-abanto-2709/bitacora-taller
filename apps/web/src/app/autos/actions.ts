@@ -9,10 +9,7 @@ export type VehicleFormState = {
   values: Record<string, string>;
 } | null;
 
-export async function createVehicle(
-  prevState: VehicleFormState,
-  formData: FormData,
-): Promise<VehicleFormState> {
+function parseVehicleForm(formData: FormData) {
   const values = Object.fromEntries(
     ["plate", "brand", "model", "year", "owner_name", "owner_phone"].map(
       (k) => [k, String(formData.get(k) ?? "")],
@@ -25,33 +22,60 @@ export async function createVehicle(
   const yearText = values.year.trim();
   const year = yearText ? Number(yearText) : null;
 
-  if (!plate) return { error: "Ingresa la placa.", values };
+  if (!plate) return { values, error: "Ingresa la placa." };
   if (!brand || !model) {
-    return { error: "Completa marca y modelo.", values };
+    return { values, error: "Completa marca y modelo." };
   }
   if (year !== null && !Number.isInteger(year)) {
-    return { error: "El año no es válido.", values };
+    return { values, error: "El año no es válido." };
   }
+
+  return {
+    values,
+    data: {
+      plate,
+      brand,
+      model,
+      year,
+      owner_name: values.owner_name.trim() || null,
+      owner_phone: values.owner_phone.trim() || null,
+    },
+  };
+}
+
+function saveError(code: string | undefined) {
+  return code === "23505"
+    ? "Ya existe un auto con esa placa."
+    : "No se pudo guardar el auto. Intenta de nuevo.";
+}
+
+export async function createVehicle(
+  prevState: VehicleFormState,
+  formData: FormData,
+): Promise<VehicleFormState> {
+  const { values, error: formError, data } = parseVehicleForm(formData);
+  if (!data) return { error: formError, values };
 
   const supabase = await createClient();
-  const { error } = await supabase.from("vehicles").insert({
-    plate,
-    brand,
-    model,
-    year,
-    owner_name: values.owner_name.trim() || null,
-    owner_phone: values.owner_phone.trim() || null,
-  });
+  const { error } = await supabase.from("vehicles").insert(data);
 
-  if (error) {
-    return {
-      error:
-        error.code === "23505"
-          ? "Ya existe un auto con esa placa."
-          : "No se pudo guardar el auto. Intenta de nuevo.",
-      values,
-    };
-  }
+  if (error) return { error: saveError(error.code), values };
 
   redirect("/");
+}
+
+export async function updateVehicle(
+  id: string,
+  prevState: VehicleFormState,
+  formData: FormData,
+): Promise<VehicleFormState> {
+  const { values, error: formError, data } = parseVehicleForm(formData);
+  if (!data) return { error: formError, values };
+
+  const supabase = await createClient();
+  const { error } = await supabase.from("vehicles").update(data).eq("id", id);
+
+  if (error) return { error: saveError(error.code), values };
+
+  redirect(`/autos/${id}`);
 }

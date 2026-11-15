@@ -55,7 +55,7 @@ siguiente paso es el hosting pago en AWS y lo del RUC 20 para el CV.
 1. **Base y login:** Next.js + Supabase, login, layout mobile-first.
    **Hecho (2026-11-15).**
 2. **Autos:** alta, edición y lista (placa, marca, modelo, año, contacto
-   opcional). Depende de 1.
+   opcional). Depende de 1. **Hecho (2026-11-15).**
 3. **Kilometraje:** lecturas con fecha; el km actual es la última. Depende de 2.
 4. **Mantenimientos:** historial por auto (fecha, tipo, km, descripción,
    observación, costo opcional). Un servicio con km cuenta como lectura.
