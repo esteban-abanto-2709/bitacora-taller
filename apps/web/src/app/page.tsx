@@ -1,22 +1,64 @@
-import { LogOut } from "lucide-react";
+import Link from "next/link";
+import { Suspense } from "react";
+import { LogOut, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { logout } from "./login/actions";
+import { VehicleList } from "./vehicle-list";
 
-export default function Home() {
+async function Body({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string | string[] }>;
+}) {
+  const { q: rawQ } = await searchParams;
+  const q = (Array.isArray(rawQ) ? rawQ[0] : rawQ)?.trim() ?? "";
+
   return (
-    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-2 px-4 py-8">
-      <h1 className="text-2xl font-semibold text-foreground">
-        Bitácora Taller
-      </h1>
-      <p className="text-muted-foreground">
-        Control de mantenimiento de tus autos.
-      </p>
-      <form action={logout} className="mt-4">
-        <Button type="submit" variant="outline">
-          <LogOut />
-          Cerrar sesión
-        </Button>
+    <>
+      <form>
+        <Input
+          name="q"
+          type="search"
+          placeholder="Buscar por placa"
+          aria-label="Buscar por placa"
+          defaultValue={q}
+        />
       </form>
+      <Button asChild className="w-full">
+        <Link href="/autos/nuevo">
+          <Plus />
+          Nuevo auto
+        </Link>
+      </Button>
+      <VehicleList q={q} />
+    </>
+  );
+}
+
+export default function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ q?: string | string[] }>;
+}) {
+  return (
+    <main className="mx-auto flex w-full max-w-md flex-1 flex-col gap-4 px-4 py-8">
+      <div className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold text-foreground">Autos</h1>
+        <form action={logout}>
+          <Button
+            type="submit"
+            variant="ghost"
+            size="icon"
+            aria-label="Cerrar sesión"
+          >
+            <LogOut />
+          </Button>
+        </form>
+      </div>
+      <Suspense fallback={<p className="text-muted-foreground">Cargando…</p>}>
+        <Body searchParams={searchParams} />
+      </Suspense>
     </main>
   );
 }
