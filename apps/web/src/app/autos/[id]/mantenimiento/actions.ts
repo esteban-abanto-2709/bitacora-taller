@@ -84,3 +84,45 @@ export async function createMaintenance(
   revalidatePath(`/autos/${vehicleId}`);
   redirect(`/autos/${vehicleId}`);
 }
+
+export async function updateMaintenance(
+  vehicleId: string,
+  recordId: string,
+  prevState: MaintenanceFormState,
+  formData: FormData,
+): Promise<MaintenanceFormState> {
+  const { values, error: formError, data } = parseMaintenanceForm(formData);
+  if (!data) return { error: formError, values };
+
+  const kmError = await checkKm(vehicleId, data.km, data.done_on, recordId);
+  if (kmError) return { error: kmError, values };
+
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("maintenance_records")
+    .update(data)
+    .eq("id", recordId);
+
+  if (error) {
+    return {
+      error: "No se pudo guardar el mantenimiento. Intenta de nuevo.",
+      values,
+    };
+  }
+
+  revalidatePath(`/autos/${vehicleId}`);
+  redirect(`/autos/${vehicleId}`);
+}
+
+export async function deleteMaintenance(vehicleId: string, recordId: string) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("maintenance_records")
+    .delete()
+    .eq("id", recordId);
+
+  if (error) throw new Error("No se pudo borrar el mantenimiento.");
+
+  revalidatePath(`/autos/${vehicleId}`);
+  redirect(`/autos/${vehicleId}`);
+}

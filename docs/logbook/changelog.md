@@ -12,6 +12,10 @@ Summary in ≤2 lines of what was done.
 
 ---
 
+## [RM-004] Maintenance history (2026-11-18 09:50)
+`service_types` (fixed seeded list) and `maintenance_records`, listed on the vehicle detail with create, edit and confirmed delete; km is required and prefilled.
+The current km and the km rule now read readings and maintenance together through the `vehicle_odometer` view.
+
 ## [RM-003] Mileage readings (2026-11-18 08:54)
 `mileage_readings` table (no edit), current km plus history with add and confirmed delete on the vehicle detail; readings must fit between earlier and later ones, never in the future.
 Creating a vehicle takes an optional current km as its first reading.

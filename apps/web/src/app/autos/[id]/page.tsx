@@ -106,20 +106,25 @@ async function Body({ params }: { params: Promise<{ id: string }> }) {
         ) : (
           <ul className="flex flex-col divide-y rounded-lg border">
             {records.map((r) => (
-              <li key={r.id} className="flex flex-col gap-1 px-3 py-2">
-                <div className="flex items-center justify-between gap-2">
-                  <span className="font-medium">{r.service_types.name}</span>
-                  {r.cost !== null && <span>{formatCost(r.cost)}</span>}
-                </div>
-                <p className="text-muted-foreground">
-                  {formatDate(r.done_on)} · {formatKm(r.km)}
-                </p>
-                {r.description && <p className="text-sm">{r.description}</p>}
-                {r.observation && (
-                  <p className="text-sm text-muted-foreground">
-                    {r.observation}
+              <li key={r.id}>
+                <Link
+                  href={`/autos/${vehicle.id}/mantenimiento/${r.id}/editar`}
+                  className="flex flex-col gap-1 px-3 py-2 hover:bg-muted/50"
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="font-medium">{r.service_types.name}</span>
+                    {r.cost !== null && <span>{formatCost(r.cost)}</span>}
+                  </div>
+                  <p className="text-muted-foreground">
+                    {formatDate(r.done_on)} · {formatKm(r.km)}
                   </p>
-                )}
+                  {r.description && <p className="text-sm">{r.description}</p>}
+                  {r.observation && (
+                    <p className="text-sm text-muted-foreground">
+                      {r.observation}
+                    </p>
+                  )}
+                </Link>
               </li>
             ))}
           </ul>

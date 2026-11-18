@@ -32,6 +32,18 @@ export async function getServiceTypes(): Promise<ServiceType[] | null> {
   return error ? null : (data as ServiceType[]);
 }
 
+export async function getMaintenanceRecord(
+  id: string,
+): Promise<MaintenanceRecord | null> {
+  const supabase = await createClient();
+  const { data, error } = await supabase
+    .from("maintenance_records")
+    .select("*, service_types(name)")
+    .eq("id", id)
+    .maybeSingle();
+  return error ? null : (data as unknown as MaintenanceRecord | null);
+}
+
 export async function getMaintenanceRecords(
   vehicleId: string,
 ): Promise<MaintenanceRecord[] | null> {

@@ -28,7 +28,7 @@ MVP in progress. The UI is in Spanish.
 - [x] Email and password login (accounts are created by the admin; no public sign-up)
 - [x] Cars: list with plate search, create, view and edit
 - [x] Mileage readings
-- [ ] Maintenance and repair history
+- [x] Maintenance and repair history
 - [ ] Due-service alerts by mileage or date
 
 The full plan lives in [`docs/logbook/`](./docs/logbook/).
