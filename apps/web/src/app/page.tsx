@@ -4,6 +4,7 @@ import { LogOut, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { logout } from "./login/actions";
+import { DueServices } from "./due-services";
 import { VehicleList } from "./vehicle-list";
 
 async function Body({
@@ -16,6 +17,7 @@ async function Body({
 
   return (
     <>
+      {!q && <DueServices />}
       <form>
         <Input
           name="q"
