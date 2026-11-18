@@ -34,8 +34,13 @@ siguiente paso es el hosting pago en AWS y lo del RUC 20 para el CV.
 - **Alertas:** se muestran en la pantalla de inicio (vencido y próximo, por km
   o por fecha). No hay push en el MVP.
 - **Intervalos:** cada tipo de servicio tiene un intervalo por defecto en km
-  y/o meses (avisa lo primero que llegue), editable por auto. Ejemplo: aceite
-  cada 5,000 km o 6 meses.
+  y/o meses (avisa lo primero que llegue), sembrado por migración en
+  `service_types`. Un auto puede tener su propio intervalo para un tipo (tabla
+  `vehicle_service_intervals`); esa fila reemplaza el por defecto completo, y
+  si deja ambos vacíos ese servicio no avisa en ese auto.
+- **Avisos:** "próximo" es cuando faltan 1,000 km o 30 días o menos; "vencido"
+  cuando ya se pasó el km o la fecha. Solo avisan los tipos que el auto ya tiene
+  hechos al menos una vez (sin registro previo no hay desde dónde contar).
 - **Login:** correo y contraseña con Supabase Auth. Registro público
   desactivado: Esteban crea las cuentas desde el panel de Supabase.
 - **UI:** shadcn/ui + lucide, interfaz solo en español.
