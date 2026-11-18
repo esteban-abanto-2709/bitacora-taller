@@ -16,9 +16,9 @@ changelog and is deleted from here.
 ## [RM-003] Mileage readings
 - **Goal:** know each car's current mileage and how it changed over time.
 - **Scope:** readings with date and km per vehicle; the current km is the latest reading. Requires RM-002.
-- **Open questions:** whether creating a vehicle asks for its initial km; whether a reading lower than the previous one is rejected.
+- **Decided:** creating a vehicle asks for an optional initial km; a reading lower than an earlier one (or higher than a later one) is rejected; date defaults to today, never in the future; readings are corrected by deleting them.
 - **Done when:** the mechanic can add a reading from the vehicle detail and see the current km there.
-- **Date:** 2026-11-15 · **Status:** Open
+- **Date:** 2026-11-15 · **Status:** In progress (2026-11-18)
 
 ## [RM-004] Maintenance history
 - **Goal:** record what was done to each car and when.

@@ -47,6 +47,11 @@ siguiente paso es el hosting pago en AWS y lo del RUC 20 para el CV.
   TypeScript se escriben a mano.
 - **Autos:** sin borrar en el MVP (solo editar). Placa única, guardada en
   mayúsculas sin espacios ni guiones.
+- **Kilometraje:** lecturas con fecha (por defecto hoy, nunca futura). El km
+  actual es la lectura más reciente. Una lectura no puede ser menor que una
+  anterior ni mayor que una posterior. Se corrige borrándola (con
+  confirmación), no editándola. El alta de un auto pide el km actual como
+  campo opcional, que se guarda como primera lectura.
 - **Acceso:** un usuario por persona; todos ven los mismos autos. Sin
   multi-empresa por ahora.
 
