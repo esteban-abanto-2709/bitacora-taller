@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
-import { formatKm, MAX_KM, today } from "@/lib/mileage";
+import { checkKm, MAX_KM, today } from "@/lib/mileage";
 
 export type MileageFormState = {
   error: string;
@@ -31,45 +31,10 @@ export async function addReading(
     return { error: "La fecha no puede ser futura.", values };
   }
 
+  const message = await checkKm(vehicleId, km, readOn);
+  if (message) return { error: message, values };
+
   const supabase = await createClient();
-  const [before, after] = await Promise.all([
-    supabase
-      .from("mileage_readings")
-      .select("km")
-      .eq("vehicle_id", vehicleId)
-      .lte("read_on", readOn)
-      .order("km", { ascending: false })
-      .limit(1)
-      .maybeSingle(),
-    supabase
-      .from("mileage_readings")
-      .select("km")
-      .eq("vehicle_id", vehicleId)
-      .gt("read_on", readOn)
-      .order("km", { ascending: true })
-      .limit(1)
-      .maybeSingle(),
-  ]);
-
-  if (before.error || after.error) {
-    return {
-      error: "No se pudo guardar la lectura. Intenta de nuevo.",
-      values,
-    };
-  }
-  if (before.data && km < before.data.km) {
-    return {
-      error: `El kilometraje no puede ser menor que una lectura anterior (${formatKm(before.data.km)}).`,
-      values,
-    };
-  }
-  if (after.data && km > after.data.km) {
-    return {
-      error: `El kilometraje no puede ser mayor que una lectura posterior (${formatKm(after.data.km)}).`,
-      values,
-    };
-  }
-
   const { error } = await supabase
     .from("mileage_readings")
     .insert({ vehicle_id: vehicleId, km, read_on: readOn });

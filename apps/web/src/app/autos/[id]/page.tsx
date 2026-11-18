@@ -3,7 +3,13 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import { ArrowLeft, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { formatDate, formatKm, getReadings, today } from "@/lib/mileage";
+import {
+  formatDate,
+  formatKm,
+  getCurrentKm,
+  getReadings,
+  today,
+} from "@/lib/mileage";
 import { getVehicle } from "@/lib/vehicles";
 import { addReading, deleteReading } from "./actions";
 import { DeleteReadingButton } from "./delete-reading-button";
@@ -11,12 +17,12 @@ import { MileageForm } from "./mileage-form";
 
 async function Body({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [vehicle, readings] = await Promise.all([
+  const [vehicle, readings, current] = await Promise.all([
     getVehicle(id),
     getReadings(id),
+    getCurrentKm(id),
   ]);
   if (!vehicle) notFound();
-  const current = readings?.[0];
 
   return (
     <>
