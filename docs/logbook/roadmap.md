@@ -16,9 +16,9 @@ changelog and is deleted from here.
 ## [RM-004] Maintenance history
 - **Goal:** record what was done to each car and when.
 - **Scope:** per vehicle: date, type, km, description, observation, optional cost. A service with km also counts as a mileage reading. Requires RM-002.
-- **Open questions:** initial list of service types; whether entries can be edited or deleted.
+- **Decided:** service types are a fixed seeded list (a new type is a migration); entries can be edited and deleted (with confirmation); km is required and prefilled with the current km; the current km is the latest of readings and maintenance.
 - **Done when:** the vehicle detail shows its history and the mechanic can add an entry from the phone.
-- **Date:** 2026-11-15 · **Status:** Open
+- **Date:** 2026-11-15 · **Status:** In progress (2026-11-18)
 
 ## [RM-005] Due-service alerts
 - **Goal:** the home screen tells the mechanic which cars are due or overdue for a service.

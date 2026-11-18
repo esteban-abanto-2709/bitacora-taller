@@ -52,6 +52,11 @@ siguiente paso es el hosting pago en AWS y lo del RUC 20 para el CV.
   anterior ni mayor que una posterior. Se corrige borrándola (con
   confirmación), no editándola. El alta de un auto pide el km actual como
   campo opcional, que se guarda como primera lectura.
+- **Mantenimientos:** el tipo sale de una lista fija (tabla `service_types`
+  sembrada por migración; un tipo nuevo es una migración). Se pueden editar y
+  borrar (con confirmación). El km es obligatorio y viene prellenado con el km
+  actual. El km actual del auto es lo más reciente entre lecturas y
+  mantenimientos, y la regla de "no menor que una anterior" mira ambos.
 - **Acceso:** un usuario por persona; todos ven los mismos autos. Sin
   multi-empresa por ahora.
 
