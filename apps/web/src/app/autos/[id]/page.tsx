@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { ArrowLeft, Pencil } from "lucide-react";
+import { ArrowLeft, Pencil, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { formatCost, getMaintenanceRecords } from "@/lib/maintenance";
 import {
   formatDate,
   formatKm,
@@ -17,10 +18,11 @@ import { MileageForm } from "./mileage-form";
 
 async function Body({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
-  const [vehicle, readings, current] = await Promise.all([
+  const [vehicle, readings, current, records] = await Promise.all([
     getVehicle(id),
     getReadings(id),
     getCurrentKm(id),
+    getMaintenanceRecords(id),
   ]);
   if (!vehicle) notFound();
 
@@ -80,6 +82,44 @@ async function Body({ params }: { params: Promise<{ id: string }> }) {
                   action={deleteReading.bind(null, vehicle.id, r.id)}
                   label={`${formatKm(r.km)} del ${formatDate(r.read_on)}`}
                 />
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
+      <section className="flex flex-col gap-3">
+        <h2 className="text-sm font-medium text-muted-foreground">
+          Mantenimientos
+        </h2>
+        <Button asChild variant="outline">
+          <Link href={`/autos/${vehicle.id}/mantenimiento/nuevo`}>
+            <Plus />
+            Nuevo mantenimiento
+          </Link>
+        </Button>
+        {records === null ? (
+          <p className="text-destructive">No se pudo cargar el historial.</p>
+        ) : records.length === 0 ? (
+          <p className="text-muted-foreground">
+            Sin mantenimientos registrados.
+          </p>
+        ) : (
+          <ul className="flex flex-col divide-y rounded-lg border">
+            {records.map((r) => (
+              <li key={r.id} className="flex flex-col gap-1 px-3 py-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="font-medium">{r.service_types.name}</span>
+                  {r.cost !== null && <span>{formatCost(r.cost)}</span>}
+                </div>
+                <p className="text-muted-foreground">
+                  {formatDate(r.done_on)} · {formatKm(r.km)}
+                </p>
+                {r.description && <p className="text-sm">{r.description}</p>}
+                {r.observation && (
+                  <p className="text-sm text-muted-foreground">
+                    {r.observation}
+                  </p>
+                )}
               </li>
             ))}
           </ul>
