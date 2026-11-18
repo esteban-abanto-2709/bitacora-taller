@@ -12,7 +12,7 @@ export default function NewVehiclePage() {
           <Link href="/">Cancelar</Link>
         </Button>
       </div>
-      <VehicleForm action={createVehicle} />
+      <VehicleForm action={createVehicle} askKm />
     </main>
   );
 }

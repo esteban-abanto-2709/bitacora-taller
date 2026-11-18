@@ -9,12 +9,14 @@ import type { VehicleFormState } from "./actions";
 export function VehicleForm({
   action,
   defaultValues,
+  askKm = false,
 }: {
   action: (
     prevState: VehicleFormState,
     formData: FormData,
   ) => Promise<VehicleFormState>;
   defaultValues?: Record<string, string>;
+  askKm?: boolean;
 }) {
   const [state, formAction, pending] = useActionState(action, null);
   const v = state?.values ?? defaultValues;
@@ -52,6 +54,19 @@ export function VehicleForm({
           defaultValue={v?.year}
         />
       </div>
+      {askKm && (
+        <div className="flex flex-col gap-2">
+          <Label htmlFor="km">Kilometraje actual (opcional)</Label>
+          <Input
+            id="km"
+            name="km"
+            type="number"
+            inputMode="numeric"
+            min={0}
+            defaultValue={v?.km}
+          />
+        </div>
+      )}
       <p className="text-sm font-medium text-muted-foreground">
         Contacto del dueño (opcional)
       </p>

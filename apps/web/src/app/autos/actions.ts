@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { MAX_KM, today } from "@/lib/mileage";
 import { createClient } from "@/lib/supabase/server";
 import { normalizePlate } from "@/lib/vehicles";
 
@@ -56,10 +57,28 @@ export async function createVehicle(
   const { values, error: formError, data } = parseVehicleForm(formData);
   if (!data) return { error: formError, values };
 
+  values.km = String(formData.get("km") ?? "");
+  const kmText = values.km.trim();
+  const km = kmText ? Number(kmText) : null;
+  if (km !== null && (!Number.isInteger(km) || km < 0 || km > MAX_KM)) {
+    return { error: "El kilometraje no es válido.", values };
+  }
+
   const supabase = await createClient();
-  const { error } = await supabase.from("vehicles").insert(data);
+  const { data: vehicle, error } = await supabase
+    .from("vehicles")
+    .insert(data)
+    .select("id")
+    .single();
 
   if (error) return { error: saveError(error.code), values };
+
+  if (km !== null) {
+    const { error: readingError } = await supabase
+      .from("mileage_readings")
+      .insert({ vehicle_id: vehicle.id, km, read_on: today() });
+    if (readingError) redirect(`/autos/${vehicle.id}`);
+  }
 
   redirect("/");
 }

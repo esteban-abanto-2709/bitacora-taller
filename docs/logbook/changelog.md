@@ -12,6 +12,10 @@ Summary in ≤2 lines of what was done.
 
 ---
 
+## [RM-003] Mileage readings (2026-11-18 08:54)
+`mileage_readings` table (no edit), current km plus history with add and confirmed delete on the vehicle detail; readings must fit between earlier and later ones, never in the future.
+Creating a vehicle takes an optional current km as its first reading.
+
 ## [RM-002] Vehicles (2026-11-15)
 `vehicles` table with RLS (no delete, unique normalized plate), list with plate search on `/`, create, detail and edit pages.
 Tested end to end against the dev database.
