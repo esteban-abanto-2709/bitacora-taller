@@ -12,6 +12,10 @@ Summary in ≤2 lines of what was done.
 
 ---
 
+## [RM-005] Due-service alerts (2026-11-18 11:32)
+Default km/month intervals per service type with per-vehicle overrides on `/autos/[id]/intervalos`; the `vehicle_service_due` view computes when each service is due.
+Home lists overdue and upcoming services (1,000 km or 30 days ahead) for types the vehicle already had.
+
 ## [RM-004] Maintenance history (2026-11-18 09:50)
 `service_types` (fixed seeded list) and `maintenance_records`, listed on the vehicle detail with create, edit and confirmed delete; km is required and prefilled.
 The current km and the km rule now read readings and maintenance together through the `vehicle_odometer` view.

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Suspense } from "react";
-import { ArrowLeft, Pencil, Plus } from "lucide-react";
+import { ArrowLeft, CalendarClock, Pencil, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { formatCost, getMaintenanceRecords } from "@/lib/maintenance";
 import {
@@ -147,6 +147,12 @@ async function Body({ params }: { params: Promise<{ id: string }> }) {
           <p className="text-muted-foreground">Sin contacto registrado.</p>
         )}
       </section>
+      <Button asChild variant="outline" className="w-full">
+        <Link href={`/autos/${vehicle.id}/intervalos`}>
+          <CalendarClock />
+          Intervalos de servicio
+        </Link>
+      </Button>
       <Button asChild className="w-full">
         <Link href={`/autos/${vehicle.id}/editar`}>
           <Pencil />

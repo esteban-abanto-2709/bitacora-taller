@@ -41,6 +41,45 @@ export function dueStatus(s: DueService, today: string): DueStatus | null {
   return null;
 }
 
+export type ServiceInterval = {
+  id: number;
+  name: string;
+  default_km: number | null;
+  default_months: number | null;
+  km: number | null;
+  months: number | null;
+  overridden: boolean;
+};
+
+export async function getServiceIntervals(
+  vehicleId: string,
+): Promise<ServiceInterval[] | null> {
+  const supabase = await createClient();
+  const [types, overrides] = await Promise.all([
+    supabase
+      .from("service_types")
+      .select("id, name, interval_km, interval_months")
+      .order("sort_order"),
+    supabase
+      .from("vehicle_service_intervals")
+      .select("service_type_id, interval_km, interval_months")
+      .eq("vehicle_id", vehicleId),
+  ]);
+  if (types.error || overrides.error) return null;
+  return types.data.map((t) => {
+    const o = overrides.data.find((r) => r.service_type_id === t.id);
+    return {
+      id: t.id,
+      name: t.name,
+      default_km: t.interval_km,
+      default_months: t.interval_months,
+      km: o ? o.interval_km : t.interval_km,
+      months: o ? o.interval_months : t.interval_months,
+      overridden: !!o,
+    };
+  });
+}
+
 export async function getDueServices(): Promise<
   { service: DueService; status: DueStatus }[] | null
 > {
